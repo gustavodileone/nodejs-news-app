@@ -15,6 +15,7 @@ Create a new mysql database and use the `db-nodejs-news.sql` file to create the 
 ```
 git clone git@github.com:gustavodileone/nodejs-news-app.git
 cd nodejs-news-app
+npm install
 ```
 
 **Create a `.env` file in the root directory and use the file `.env.example` as a template**
