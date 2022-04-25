@@ -1,0 +1,16 @@
+.news-card-container {
+    small {
+        display: inline-flex;
+    }
+
+    strong, a, span {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+    }
+
+    a, span {
+        margin-left: 3px;
+    }
+}

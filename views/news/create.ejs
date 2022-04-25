@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs"); %>
+
+    <title>News - Create</title>
+</head>
+<body id="news">
+    <%- include("../_partials/navbar.ejs") %>
+    
+    <main id="news-create">
+        <section>
+            <div class="container">
+                <div class="d-flex justify-content-center">
+                    <div class="news-card card shadow mt-4">
+                        <div class="card-body">
+                            <h2 class="card-title">Create a news</h2>
+                            <% if(err_msg) { %>
+                                <p class="text-danger my-2">
+                                    <%= err_msg %>
+                                </p>
+                            <% } %>
+                            <form action="/news/create" method="POST">
+                                <label class="d-flex flex-column mt-3">
+                                    <span>Title: </span>
+                                    <input class="mt-1" id="title" type="text" name="title" required>
+                                </label>
+                                <label class="d-flex flex-column mt-2">
+                                    <span>Slug: </span>
+                                    <input class="mt-1" id="slug" type="text" name="slug" required>
+                                </label>
+                                <label class="d-flex flex-column mt-2">
+                                    <span>Brief Description: </span>
+                                    <textarea class="description mt-1" type="text" name="desc" required></textarea>
+                                </label>
+                                <label class="d-flex flex-column mt-2">
+                                    <span>Content: </span>
+                                    <textarea class="content mt-1" type="text" name="content" required></textarea>
+                                </label>
+
+                                <div class="d-flex mt-4">
+                                    <button type="submit" class="btn btn-success">
+                                        Save
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

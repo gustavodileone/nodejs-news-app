@@ -1,0 +1,10 @@
+<% if(paginator) { %>
+    <div class="d-flex justify-content-center">
+        <% if(paginator.prev) { %>
+            <a class="btn btn-primary me-2" href="<%= paginator.redirect %><%= paginator.page - 1 == 1 ? '' : "?page=" + (paginator.page - 1) %>">Previous</a>
+        <% } %>
+        <% if(paginator.next) { %>
+            <a class="btn btn-primary ms-2" href="<%= paginator.redirect %>?page=<%= paginator.page + 1 %>">Next</a>
+        <% } %>
+    </div>
+<% } %>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs") %>
+
+    <title>News - <%= user.user_name %></title>
+</head>
+<body id="user">
+    <%- include("../_partials/navbar.ejs") %>
+
+    <main>
+        <section id="user-edit">
+            <div class="container">
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="user-card">
+                        <form action="/user/delete-user/<%= user.user_id %>?_method=DELETE" method="POST" class="d-flex flex-column">
+                            <h2 class="text-center">Delete user: <%= user.user_name %></h2>
+
+                            <p class="text-center text-danger mt-2">
+                                All your news are going to be deleted.
+                            </p>
+
+                            <% if(err_msg) { %>
+                                <p class="text-center text-danger mt-2">
+                                    <%= err_msg %>
+                                </p>
+                            <% } %>
+
+
+                            <label class="d-flex flex-column mt-2">
+                                E-mail:
+                                <input class="form-control mt-1" type="email" name="email">
+                            </label>
+                            <label class="d-flex flex-column mt-2">
+                                Password:
+                                <input class="form-control mt-1" type="password" name="password">
+                            </label>
+                            
+                            <div class="d-flex flex-column flex-md-row justify-content-md-between mt-4">
+                                <button type="submit" class="btn btn-danger w-100 me-md-5">
+                                    Delete your account
+                                </button>
+
+                                <a href="/user/<%= user.user_slug %>" class="btn btn-success mt-4 mt-md-0 w-100">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

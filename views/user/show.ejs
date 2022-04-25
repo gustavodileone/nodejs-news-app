@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs") %>
+
+    <title>News - <%= user.user_name %></title>
+</head>
+<body id="user">
+    <%- include("../_partials/navbar.ejs") %>
+
+    <main>
+        <section id="user-show">
+            <div class="container">
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="user-card">
+                        <div class="d-flex flex-column align-items-center">
+                            <strong class="user-name mt-2">
+                                <%= user.user_name %>
+                            </strong>
+                        </div>
+
+                        <div class="mt-4">
+                            Joined At: <small class="date"> <%= user.user_joinedAtStr %> </small>
+                        </div>
+
+                        <div class="user-biography">
+                            <% if(user.user_biography != null) { %>
+                                <p class="mt-4">
+                                    <%= user.user_biography %>
+                                </p>
+                            <% } %>
+
+                            <% if(sessionUser.userId === user.user_id) { %>
+                                <a href="/user/edit/<%= user.user_slug %>" class="btn btn-outline-dark rounded-pill align-self-end mt-3">
+                                    Edit profile
+                                </a>
+                            <% } %>
+                        </div>
+
+                        <% if(news) { %>
+                            <div class="user-news mt-5">
+                                <h3>User's news</h3>
+
+                                <div class="row">
+                                    <% news.forEach(result => { %>
+                                        <div class="<%= news[1] == undefined ? "" : "col-xl-6" %>">
+                                            <div class="news-card-container d-flex flex-column p-3 shadow border mt-3">
+                                                <strong><%= result.news_title %></strong>
+                                                <small>By <%= user.user_name %></small>
+                                                <small>Date: <span class="date"> <%= result.news_datestr %> </span> </small>
+                    
+                                                <div class="d-flex mt-3">
+                                                    <a href="/news/<%= result.news_slug %>" class="btn btn-success">
+                                                        Read
+                                                    </a>
+                                                    <% if(sessionUser.userId === result.news_author) { %>
+                                                        <a href="/news/edit/<%= result.news_slug %>" class="btn btn-primary mx-3">
+                                                            Edit
+                                                        </a>
+                                                        <form action="/news/delete/<%= result.news_id %>?_method=DELETE" method="POST">
+                                                            <button class="btn btn-danger">
+                                                                Delete
+                                                            </button>
+                                                        </form>
+                                                    <% } %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <% }) %>
+                                </div>
+
+                                <div class="mt-5">
+                                    <%- include("../_partials/pagination.ejs") %>
+                                </div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

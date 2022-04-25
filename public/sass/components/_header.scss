@@ -1,0 +1,33 @@
+header {
+    position: sticky;
+    top: 0;
+    z-index: 998;
+
+    // User settings menu
+    .username-container {
+        .user-settings-menu {
+            background: #fff;
+            position: absolute;
+            width: 200px;
+            opacity: 0;
+            visibility: hidden;
+    
+            transition: all 0.2s linear;
+        }
+    
+        a:hover + .user-settings-menu, .user-settings-menu:hover {
+            // On active
+            opacity: 1;
+            z-index: 999;
+            visibility: visible;
+    
+            a {
+                transition: all 0.2s linear;
+            }
+    
+            a:hover {
+                padding-left: 20px!important;
+            }
+        }
+    }    
+}

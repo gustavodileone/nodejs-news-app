@@ -1,0 +1,13 @@
+// Base
+@import "base/_reset.scss";
+
+// Components
+@import "components/_header.scss";
+@import "components/_news-card.scss";
+@import "components/_sidenav.scss";
+
+// Pages
+@import "pages/homepage.scss";
+@import "pages/news.scss";
+@import "pages/user.scss";
+@import "pages/error.scss";

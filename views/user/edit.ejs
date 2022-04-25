@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs") %>
+
+    <title>News - <%= user.user_name %></title>
+</head>
+<body id="user">
+    <%- include("../_partials/navbar.ejs") %>
+
+    <main>
+        <section id="user-edit">
+            <div class="container">
+                <div class="d-flex justify-content-center mt-5">
+                    <div class="user-card">
+                        <form action="/user/edit/<%= user.user_id %>?_method=PATCH" method="POST" class="d-flex flex-column">
+                            <h2 class="text-center">Edit user: <%= user.user_name %></h2>
+
+                            <% if(err_msg) { %>
+                                <p class="text-center text-danger my-2">
+                                    <%= err_msg %>
+                                </p>
+                            <% } %>
+
+                            <label class="d-flex flex-column mt-2">
+                                Username:
+                                <input class="form-control mt-1" type="text" name="username" placeholder="<%= user.user_name %>" value="<%= user.user_name %>">
+                            </label>
+                            <label class="d-flex flex-column mt-2">
+                                Biography:
+                                <textarea class="form-control mt-1" type="text" name="biography" placeholder="<%= user.user_biography %>"><%= user.user_biography %></textarea>
+                            </label>
+                            
+                            <div class="d-flex justify-content-between mt-3">
+                                <button type="submit" class="btn btn-success w-100 me-5">
+                                    Edit profile
+                                </button>
+
+                                <a href="/user/<%= user.user_slug %>" class="btn btn-danger w-100">
+                                    Cancel
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs"); %>
+
+    <title>News - <%= news.news_title %></title>
+</head>
+<body id="news">
+    <%- include("../_partials/navbar.ejs") %>
+
+    <main id="news-show">
+        <section>
+            <div class="container">
+                <div class="d-flex justify-content-center">
+                    <div class="news-card p-5">
+                        <div class="d-flex flex-column align-items-center">
+                            <h2 class="card-title mb-0 text-center">
+                                <%= news.news_title %>
+                            </h2>
+                            <span>
+                                <%= news.news_desc %>
+                            </span>
+                        </div>
+                        <div class="d-flex flex-column mt-4">
+                            <p class="mb-0">
+                                By: <strong> <%= news.news_author %> </strong>
+                            </p>
+                            <p class="mb-0">
+                                Date: <strong class="date"> <%= news.news_datestr %> </strong>
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <p>
+                                <%= news.news_content %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

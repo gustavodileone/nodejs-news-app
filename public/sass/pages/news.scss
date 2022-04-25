@@ -1,0 +1,52 @@
+#news {
+    #news-create, #news-edit, #news-show {
+        .news-card {
+            width: 100%;
+
+            @media (min-width: 992px) {
+                width: 60%;
+            }
+
+            p {
+                overflow-wrap: break-word;
+            }
+
+            form {
+                label {
+                    span {
+                        color: #222;
+                    }
+
+                    input, textarea {
+                        padding: 12px;
+                        outline: none;
+                        border: 1px solid #333;
+                        border-radius: 4px;
+                    }
+
+                    input {
+                        height: 40px;
+                    }
+
+                    textarea {
+                        &.description {
+                            height: 60px;
+                        }
+
+                        &.content {
+                            height: 120px;
+                        }
+                    }
+                }
+            }
+
+            button {
+                width: 100%;
+
+                @media (min-width: 768px) {
+                    width: auto;
+                }
+            }
+        }
+    }
+}

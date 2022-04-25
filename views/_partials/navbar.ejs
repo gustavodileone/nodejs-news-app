@@ -1,0 +1,57 @@
+<%- include("sideNav.ejs") %>
+
+<header class="bg-dark shadow">
+    <div class="container">
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <a href="/" class="text-white py-3">
+                    Home
+                </a>
+            </div>
+            <div class="d-none d-lg-block">
+                <% if(sessionUser.userId) { %>
+                    <div class="d-flex align-items-center">
+                        <div class="username-container">
+                            <a href="/user/<%= sessionUser.slug %>" class="d-block py-3 text-white px-4"><%= sessionUser.username %></a>
+                            
+                            <!-- Hover menu -->
+                            <div class="user-settings-menu d-none d-lg-block shadow">
+                                <ul class="list-unstyled p-0 m-0">
+                                    <li>
+                                        <a class="d-block px-3 py-2" href="/user/edit/<%= sessionUser.slug %>">
+                                            Edit my profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="d-block px-3 py-2" href="/user/edit-password/<%= sessionUser.slug %>">
+                                            Change my password
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="d-block text-danger px-3 py-2" href="/user/delete-user/<%= sessionUser.slug %>">
+                                            Delete my account
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <a href="/news/create" class="text-success me-4 py-3">Create a news</a>
+                        <form action="/logout" method="POST">
+                            <button class="px-0 bg-transparent border-0 text-danger py-3">Logout</button>
+                        </form>
+                    </div>
+                <% } else { %>
+                    <div class="d-flex align-items-center">
+                        <a href="/register" class="text-white py-3 me-4">Sign up</a>
+                        <a href="/login" class="text-success py-3">Login</a>
+                    </div>
+                <% } %>
+            </div>
+            <div class="d-lg-none">
+                <button class="bg-transparent border-0 text-white py-3" id="sidenav-button" type="button" onclick="toggleSideNav()">
+                    Menu
+                </button>
+            </div>
+        </div>
+    </div>
+</header>

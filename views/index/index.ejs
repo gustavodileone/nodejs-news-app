@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <%- include("../_partials/libraries.ejs"); %> 
+
+    <title>News</title>
+</head>
+<body>
+    <%- include("../_partials/navbar.ejs") %>
+
+    <section id="section-noticias">
+        <div class="container">
+            <h1 class="mt-5">2022 News</h1>
+
+            <div class="row mt-4">
+                <% if(news) { %>
+                    <% news.forEach((result, i) => { %>
+                        <div class="col-lg-4 mt-4 <%= i < 3 ? 'mt-lg-0' : '' %>">
+                            <div class="news-card-container d-flex flex-column p-3 shadow border">
+                                <strong class="news-card-title"><%= result.news_title %></strong>
+                                <small>
+                                    By 
+                                    <a href="/user/<%= result.news_author_slug %>"><%= result.news_author_name %></a>
+                                </small>
+                                <small>Date: <span class="date"> <%= result.news_datestr %> </span> </small>
+
+                                <div class="d-flex mt-3">
+                                    <a href="/news/<%= result.news_slug %>" class="btn btn-success">
+                                        Read
+                                    </a>
+                                    <% if(sessionUser.userId === result.news_author) { %>
+                                        <a href="/news/edit/<%= result.news_slug %>" class="btn btn-primary mx-3">
+                                            Edit
+                                        </a>
+                                        <form action="/news/delete/<%= result.news_id %>?_method=DELETE" method="POST">
+                                            <button class="btn btn-danger">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } %>
+            </div>
+            
+            <div class="mt-5">
+                <%- include("../_partials/pagination.ejs"); %>
+            </div>
+        </div>
+    </section>
+</body>
+</html>
