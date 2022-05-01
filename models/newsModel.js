@@ -11,7 +11,7 @@ module.exports = {
     },
 
     async getAllNews() {
-        const [ results ] = await dbConnection.execute("SELECT * FROM tb_news ORDER BY news_date");
+        const [ results ] = await dbConnection.execute("SELECT * FROM tb_news ORDER BY news_date DESC");
 
         return results;
     },

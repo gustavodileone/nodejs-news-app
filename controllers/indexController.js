@@ -50,7 +50,9 @@ module.exports = {
     },
 
     async indexLoginPost(req, res, next) {
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+
+        email = email.trim();
 
         if(email === '' || password === '') {
             res.status(400);
@@ -91,7 +93,10 @@ module.exports = {
     },
 
     indexRegisterPost(req, res, next) {
-        const { username, email, password } = req.body;
+        let { username, email, password } = req.body;
+
+        username = username.trim();
+        email = email.trim();
 
         if(username === '' || email === '' || password === '') {
             res.status(400);
@@ -107,6 +112,8 @@ module.exports = {
             }
 
             let slug = username.replaceAll(" ", "-");
+            slug = slug.replaceAll("/", "-");
+            slug = slug.replaceAll("#", "");
             slug = slug.replaceAll("?", "");
             
             let existentSlug = await userModel.getUserBySlug(slug);

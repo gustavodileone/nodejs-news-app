@@ -63,11 +63,20 @@ module.exports = {
 
     async userEditPatch(req, res, next) {
         const { id } = req.params;
-        const { username, biography } = req.body;
-
+        let { username, biography } = req.body;
+        
         if(res.locals.sessionUser.userId != id) {
             res.status(401);
             return res.redirect("/");
+        }
+
+        username = username.trim();
+
+        if(username === '') {
+            req.flash("err_msg", "Your username cannot be blank.");
+
+            res.status(400);
+            return res.redirect("/user/edit/" + user.user_slug);
         }
 
         const user = await userModel.getUserById(id);
@@ -78,15 +87,10 @@ module.exports = {
 
             return next(error);
         }
-        
-        if(username == '') {
-            req.flash("err_msg", "Your username cannot be blank.");
-
-            res.status(400);
-            return res.redirect("/user/edit/" + user.user_slug);
-        }
 
         let slug = username.replaceAll(" ", "-");
+        slug = slug.replaceAll("/", "-");
+        slug = slug.replaceAll("#", "");
         slug = slug.replaceAll("?", "");
 
         userModel.updateUser(username, biography, slug, id);
@@ -206,7 +210,9 @@ module.exports = {
 
     async userDeleteDelete(req, res) {
         const { id } = req.params;
-        const { email, password } = req.body;
+        let { email, password } = req.body;
+
+        email = email.trim();
         
         if(res.locals.sessionUser.userId != id) {
             res.status(401);

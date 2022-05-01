@@ -13,6 +13,12 @@ module.exports = {
     async newsCreatePost(req, res, next) {
         let { title, slug, desc, content } = req.body;
         const sessionUserId = req.session.userId;
+
+        title = title.trim();
+        slug = slug.trim();
+        desc = desc.trim();
+        content = content.trim();
+
     
         if(!title || !slug || !desc || !content) {
             res.status(400);
@@ -20,6 +26,8 @@ module.exports = {
         }
 
         slug = slug.replaceAll(" ", "-");
+        slug = slug.replaceAll("/", "-");
+        slug = slug.replaceAll("#", "");
         slug = slug.replaceAll("?", "");
 
         const news = await newsModel.getNewsBySlug(slug);
@@ -84,11 +92,7 @@ module.exports = {
         const id = parseInt(req.params.id);
         let { title, slug, desc, content } = req.body;
 
-        slug = slug.replaceAll(" ", "-");
-        slug = slug.replaceAll("?", "");
-
         const news = await newsModel.getNewsById(id);
-        const newsSlug = await newsModel.getNewsBySlug(slug);
 
         if(!news) {
             const error = new Error("News not found");
@@ -101,6 +105,24 @@ module.exports = {
             res.status(401);
             return res.redirect("/");
         }
+
+        title = title.trim();
+        slug = slug.trim();
+        desc = desc.trim();
+        content = content.trim();
+
+        if(title === '' || slug === '' || desc === '' || content === '') {
+            req.flash("err_msg", "Please fill in all the required fields");
+            res.status(400);
+            return res.redirect("/news/edit/" + news.news_slug);
+        }
+
+        slug = slug.replaceAll(" ", "-");
+        slug = slug.replaceAll("/", "-");
+        slug = slug.replaceAll("#", "");
+        slug = slug.replaceAll("?", "");
+
+        const newsSlug = await newsModel.getNewsBySlug(slug);
 
         if(newsSlug !== undefined && newsSlug.news_id !== id) {
             req.flash("err_msg", "Already exists a news with this slug.");
