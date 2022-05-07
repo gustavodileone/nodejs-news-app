@@ -93,7 +93,15 @@ module.exports = {
     },
 
     indexRegisterPost(req, res, next) {
-        let { username, email, password } = req.body;
+        let { username, email, password } = req.session;
+        const { code } = req.body;
+
+        if(code != req.session.email_code) {
+            req.session.destroy();
+
+            res.status(403);
+            return res.render(folderName + "/register.ejs", { err_msg: "The code doesn't match." })
+        }
 
         username = username.trim();
         email = email.trim();
