@@ -50,5 +50,11 @@ module.exports = {
         const [ results ] = await dbConnection.execute("DELETE FROM tb_news WHERE news_author = ?", [ user_id ]);
 
         return results;
-    }
+    },
+
+    async deleteUnverifiedUsersWithExpiredTokens() {
+        await dbConnection.execute("DELETE FROM tb_users WHERE email_verificated = 0 AND user_id NOT IN(SELECT verification_user FROM tb_email_verification);");
+
+        return true;
+    },
 }

@@ -10,7 +10,29 @@ const btnContinue = document.getElementById("button-continue");
 btnContinue.onclick = async e => {
     e.preventDefault();
 
-    fetch("/_ajax/send-email-verification", {
+    username.value = username.value.trim();
+    email.value = email.value.trim();
+
+    let emptyFields = 0;
+
+    if(!username.value) {
+        username.style.border = "1px solid red";
+        emptyFields++;
+    }
+
+    if(!email.value) {
+        email.style.border = "1px solid red";
+        emptyFields++;
+    }
+
+    if(!password.value) {
+        password.style.border = "1px solid red";
+        emptyFields++;
+    }
+
+    if(emptyFields !== 0) return false;
+
+    fetch("/email-verification", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
@@ -19,10 +41,9 @@ btnContinue.onclick = async e => {
     }).then(response => {
         response = response.json();
 
-        if(response.result) {
+        if(response.result) 
             return;
-        }
-
+        
         registerForm.remove();
 
         const content = registerEmailVerification.content.cloneNode(true);

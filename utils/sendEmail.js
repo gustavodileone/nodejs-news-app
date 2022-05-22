@@ -17,7 +17,7 @@ module.exports = {
                 from: `"Nodejs-news-app"`,
                 to: user_email,
                 subject: subject,
-                text: message
+                html: message
             });
 
             return true;

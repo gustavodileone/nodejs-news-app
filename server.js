@@ -28,7 +28,7 @@ const mysqlStorage = new mysqlSession({
 
 // Routes
 const indexRoute = require("./routes/indexRoute");
-const ajaxRoute = require("./routes/ajaxRoute");
+const authRoute = require("./routes/authRoute");
 const newsRoute = require("./routes/newsRoute");
 const userRoute = require("./routes/userRoute");
 
@@ -69,7 +69,7 @@ app.use((req, res, next) => {
 // Routes
     app.use("/", indexRoute);
 
-    app.use("/_ajax", ajaxRoute);
+    app.use("/", authRoute);
 
     app.use("/news", newsRoute);
 
