@@ -6,7 +6,7 @@ A simple news app built with express.js and mysql for study propurses.
 
 ### Database structure
 
-Create a new mysql database and use the `db-nodejs-news.sql` file to create the table structure.
+Create a new mysql database and use the `nodejs-news-app.sql` file to create the table structure.
 
 ### App
 

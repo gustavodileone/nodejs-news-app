@@ -36,10 +36,22 @@ module.exports = {
     
         return results;
     },
+
+    async validateEmail(email) {
+        const [ results ] = await dbConnection.execute("UPDATE tb_users SET email_verificated = 1 WHERE user_email = ?", [ email ]);
+
+        return results;
+    },
     
     async deleteUserById(id) {
         const [ results ] = await dbConnection.execute("DELETE FROM tb_users WHERE user_id = ?", [ id ]);
 
         return results;
+    },
+
+    async deleteUnverifiedUsersWithExpiredTokens() {
+        await dbConnection.execute("DELETE FROM tb_users WHERE email_verificated = 0 AND user_id NOT IN(SELECT verification_user FROM tb_email_verification)");
+
+        return true;
     },
 };

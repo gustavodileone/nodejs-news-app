@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <%- include("../_partials/libraries.ejs"); %> 
+    <%- include("../_partials/libraries.ejs"); %>
+
+    <script defer src="/public/js/ajax/register.js"></script>
 
     <title>News - Register</title>
 </head>
@@ -13,8 +15,8 @@
     <%- include("../_partials/navbar.ejs"); %>
 
     <div class="d-flex justify-content-center align-items-center h-75">
-        <div class="p-4 border shadow bg-white mx-2">
-            <form class="d-flex flex-column" action="/register" method="POST">
+        <div class="p-4 border shadow bg-white mx-2" id="register-form-container">
+            <form class="d-flex flex-column" id="register-form" method="POST">
                 <strong class="d-block text-center mb-1">
                     Register
                 </strong>
@@ -27,19 +29,19 @@
 
                 <label class="mt-3">
                     <span class="visually-hidden">Username</span>
-                    <input class="form-control" name="username" type="text" placeholder="Username" required>
+                    <input class="form-control" name="username" type="text" placeholder="Username" id="register-username" required>
                 </label>
                 <label class="my-3">
                     <span class="visually-hidden">E-mail</span>
-                    <input class="form-control" name="email" type="email" placeholder="E-mail" required>
+                    <input class="form-control" name="email" type="email" placeholder="E-mail" id="register-email" required>
                 </label>
                 <label>
                     <span class="visually-hidden">Password</span>
-                    <input class="form-control" type="password" name="password" placeholder="Password" required>
+                    <input class="form-control" type="password" name="password" placeholder="Password" id="register-password" required>
                 </label>
         
-                <button type="submit" class="btn btn-success rounded-0 mt-3">
-                    Register
+                <button id="button-continue" class="btn btn-success rounded-0 mt-3">
+                    Continue
                 </button>
 
                 <div class="d-flex justify-content-center mt-3">
@@ -48,5 +50,20 @@
             </form>
         </div>
     </div>
+
+    <template id="email-verification">
+        <div class="d-flex flex-column">
+            <strong class="d-block text-center mb-1">
+                E-mail verification
+            </strong>
+
+            <p class="email-verification-text d-block text-center">
+                Now, access your e-mail and click <br class="d-none d-sm-block">
+                in the link that we sent to you in <br class="d-none d-sm-block">
+                order to login. <br>
+                You can close this tab.
+            </p>
+        </div>
+    </template>
 </body>
 </html>
