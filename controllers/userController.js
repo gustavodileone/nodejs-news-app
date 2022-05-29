@@ -7,6 +7,7 @@ const newsModel = require("../models/newsModel");
 
 // Utils
 const { pagination } = require("../utils/pagination");
+const { existentUserSlug } = require("../utils/existentUserSlug");
 
 const folderName = "user";
 
@@ -92,6 +93,8 @@ module.exports = {
         slug = slug.replaceAll("/", "-");
         slug = slug.replaceAll("#", "");
         slug = slug.replaceAll("?", "");
+
+        slug = await existentUserSlug(slug); // handle if slug already exists
 
         userModel.updateUser(username, biography, slug, id);
 

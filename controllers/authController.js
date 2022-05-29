@@ -9,6 +9,7 @@ const emailVerificationModel = require("../models/emailVerificationModel");
 // Utils:
 const { sendEmail } = require("../utils/sendEmail");
 const { deleteExpiredTokensAndAccounts } = require("../utils/deleteExpired");
+const { existentUserSlug } = require("../utils/existentUserSlug");
 
 const folderName = "index";
 
@@ -109,24 +110,7 @@ module.exports = {
             slug = slug.replaceAll("#", "");
             slug = slug.replaceAll("?", "");
             
-            let existentSlug = await userModel.getUserBySlug(slug);
-    
-            if(existentSlug != undefined) {
-                let i = 1;
-    
-                while(true) {
-                    const unusedSlug = `${slug}.${i}`;
-    
-                    existentSlug = await userModel.getUserBySlug(unusedSlug);
-                    
-                    if(existentSlug == undefined) {
-                        slug = unusedSlug;
-                        break;
-                    }
-    
-                    i++;
-                }
-            }
+            slug = await existentUserSlug(slug); // handle if slug already exists;
     
             userModel.createUser(username, email, hash, slug)
             .then((results) => {

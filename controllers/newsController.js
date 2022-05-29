@@ -1,5 +1,6 @@
 // Models
 const newsModel = require("../models/newsModel");
+const newsCommentsModel = require("../models/newsCommentsModel");
 const userModel = require("../models/userModel");
 
 const folderName = "news";
@@ -138,6 +139,7 @@ module.exports = {
     },
 
     async newsSlugGet(req, res, next) {
+        // News:
         const { slug } = req.params;
     
         const news = await newsModel.getNewsBySlug(slug);
@@ -159,8 +161,30 @@ module.exports = {
         }
     
         news.news_author = user.user_name;
+        news.news_author_slug = user.user_slug;
+
+        // Comments:
+        let allComments = await newsCommentsModel.getAllByNewsId(news.news_id);
+
+        if(!allComments) allComments = false;
+        
+        // Exchange id to username.
+        for(index in allComments) {
+            const comment = allComments[index];
+
+            try {
+                const user = await userModel.getUserById(comment.comments_author);
+                comment.comments_author_username = user.user_name;
+                comment.comments_author_slug = user.user_slug;
+            } catch {
+                const error = new Error("Oops... Something went wrong, please come back later.");
+                error.status = 500;
+
+                return next(error);
+            }
+        }
 
         res.status(200);
-        return res.render(folderName + "/show.ejs", { news });
+        return res.render(folderName + "/show.ejs", { news, allComments });
     }
 }
