@@ -38,11 +38,14 @@ btnContinue.onclick = async e => {
             "Content-Type": "application/x-www-form-urlencoded",
         },
         body: `username=${username.value}&email=${email.value}&password=${password.value}`
-    }).then(response => {
-        response = response.json();
+    }).then(async response => {
+        response = await response.json();
 
-        if(response.result) 
+        if(!response.success) {
+            document.getElementById("err-msg").innerText = response.msg;
+
             return;
+        }
         
         registerForm.remove();
 

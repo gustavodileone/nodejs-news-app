@@ -87,6 +87,14 @@ module.exports = {
 
         await deleteExpiredTokensAndAccounts();
 
+        const existentEmail = await userModel.getUserByEmail(email);
+
+        if(existentEmail) {
+            res.status(200);
+
+            return res.json({ success: false, msg: "This e-mail has already been registered." });
+        }
+
         // Create user in database (email_verificated is 0 by default)
         bcrypt.hash(password, 10, async (err, hash) => {
             if(err) {
@@ -144,7 +152,7 @@ module.exports = {
                     const result = sendEmail(email, "E-mail verification", `Click on this link and login to your account: <br> <a href="${url}">${url}</a>`);
     
                     res.status(201);
-                    return res.json({ result: result });
+                    return res.json({ success: true, result: result });
                 })
             })
             .catch((err) => {
