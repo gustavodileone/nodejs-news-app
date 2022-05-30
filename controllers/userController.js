@@ -8,6 +8,7 @@ const newsModel = require("../models/newsModel");
 // Utils
 const { pagination } = require("../utils/pagination");
 const { existentUserSlug } = require("../utils/existentUserSlug");
+const newsCommentsModel = require("../models/newsCommentsModel");
 
 const folderName = "user";
 
@@ -239,6 +240,9 @@ module.exports = {
 
             if(success) {
                 await newsModel.deleteNewsByUserId(user.user_id);
+
+                await newsCommentsModel.deleteAllNewsCommentsByAuthorId(user.user_id);
+
                 userModel.deleteUserById(id);
 
                 req.session.destroy(err => {

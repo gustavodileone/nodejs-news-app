@@ -111,7 +111,7 @@ module.exports = {
             slug = slug.replaceAll("?", "");
             
             slug = await existentUserSlug(slug); // handle if slug already exists;
-    
+
             userModel.createUser(username, email, hash, slug)
             .then((results) => {
                 // Generate token and save in tb_email_verification

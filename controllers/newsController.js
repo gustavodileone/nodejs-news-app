@@ -68,7 +68,12 @@ module.exports = {
             return res.redirect("/");
         }
 
+        // Delete all comments in this news
+        await newsCommentsModel.deleteAllNewsCommentsByNewsId(id);
+
+        // Delete news
         newsModel.deleteNewsById(id);
+
         res.status(200);
         return res.redirect("/");
     },
@@ -139,7 +144,6 @@ module.exports = {
     },
 
     async newsSlugGet(req, res, next) {
-        // News:
         const { slug } = req.params;
     
         const news = await newsModel.getNewsBySlug(slug);
@@ -166,22 +170,24 @@ module.exports = {
         // Comments:
         let allComments = await newsCommentsModel.getAllByNewsId(news.news_id);
 
-        if(!allComments) allComments = false;
-        
-        // Exchange id to username.
-        for(index in allComments) {
-            const comment = allComments[index];
-
-            try {
-                const user = await userModel.getUserById(comment.comments_author);
-                comment.comments_author_username = user.user_name;
-                comment.comments_author_slug = user.user_slug;
-            } catch {
-                const error = new Error("Oops... Something went wrong, please come back later.");
-                error.status = 500;
-
-                return next(error);
+        if(allComments.length != 0) {
+            // Exchange id to username.
+            for(index in allComments) {
+                const comment = allComments[index];
+    
+                try {
+                    const user = await userModel.getUserById(comment.comments_author);
+                    comment.comments_author_username = user.user_name;
+                    comment.comments_author_slug = user.user_slug;
+                } catch {
+                    const error = new Error("Oops... Something went wrong, please come back later.");
+                    error.status = 500;
+    
+                    return next(error);
+                }
             }
+        } else {
+            allComments = false;
         }
 
         res.status(200);

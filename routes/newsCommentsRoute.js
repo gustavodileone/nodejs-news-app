@@ -17,9 +17,7 @@ const notAuthenticated = (req, res, next) => {
 route.post("/create", notAuthenticated, newsCommentsController.commentsCreatePost);
 
 
-route.patch("/edit/:id", notAuthenticated, () => {
-    console.log("Not registered yet")
-});
+route.patch("/edit/:comments_id", notAuthenticated, newsCommentsController.commentsEditPatch);
 
 route.delete("/delete/:comments_id", notAuthenticated, newsCommentsController.commentsDelete);
 

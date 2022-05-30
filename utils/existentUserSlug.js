@@ -19,5 +19,7 @@ module.exports = {
                 i++;
             }
         }
+
+        return slug;
     }
 }
