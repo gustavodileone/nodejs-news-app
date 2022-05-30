@@ -1,5 +1,6 @@
 // Models
 const newsModel = require("../models/newsModel");
+const newsCommentsModel = require("../models/newsCommentsModel");
 const userModel = require("../models/userModel");
 
 const folderName = "news";
@@ -67,7 +68,12 @@ module.exports = {
             return res.redirect("/");
         }
 
+        // Delete all comments in this news
+        await newsCommentsModel.deleteAllNewsCommentsByNewsId(id);
+
+        // Delete news
         newsModel.deleteNewsById(id);
+
         res.status(200);
         return res.redirect("/");
     },
@@ -159,8 +165,32 @@ module.exports = {
         }
     
         news.news_author = user.user_name;
+        news.news_author_slug = user.user_slug;
+
+        // Comments:
+        let allComments = await newsCommentsModel.getAllByNewsId(news.news_id);
+
+        if(allComments.length != 0) {
+            // Exchange id to username.
+            for(index in allComments) {
+                const comment = allComments[index];
+    
+                try {
+                    const user = await userModel.getUserById(comment.comments_author);
+                    comment.comments_author_username = user.user_name;
+                    comment.comments_author_slug = user.user_slug;
+                } catch {
+                    const error = new Error("Oops... Something went wrong, please come back later.");
+                    error.status = 500;
+    
+                    return next(error);
+                }
+            }
+        } else {
+            allComments = false;
+        }
 
         res.status(200);
-        return res.render(folderName + "/show.ejs", { news });
+        return res.render(folderName + "/show.ejs", { news, allComments });
     }
 }

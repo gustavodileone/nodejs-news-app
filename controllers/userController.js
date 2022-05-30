@@ -7,6 +7,8 @@ const newsModel = require("../models/newsModel");
 
 // Utils
 const { pagination } = require("../utils/pagination");
+const { existentUserSlug } = require("../utils/existentUserSlug");
+const newsCommentsModel = require("../models/newsCommentsModel");
 
 const folderName = "user";
 
@@ -92,6 +94,8 @@ module.exports = {
         slug = slug.replaceAll("/", "-");
         slug = slug.replaceAll("#", "");
         slug = slug.replaceAll("?", "");
+
+        slug = await existentUserSlug(slug); // handle if slug already exists
 
         userModel.updateUser(username, biography, slug, id);
 
@@ -236,6 +240,9 @@ module.exports = {
 
             if(success) {
                 await newsModel.deleteNewsByUserId(user.user_id);
+
+                await newsCommentsModel.deleteAllNewsCommentsByAuthorId(user.user_id);
+
                 userModel.deleteUserById(id);
 
                 req.session.destroy(err => {

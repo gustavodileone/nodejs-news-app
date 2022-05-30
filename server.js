@@ -30,6 +30,7 @@ const mysqlStorage = new mysqlSession({
 const indexRoute = require("./routes/indexRoute");
 const authRoute = require("./routes/authRoute");
 const newsRoute = require("./routes/newsRoute");
+const newsCommentsRoute = require("./routes/newsCommentsRoute");
 const userRoute = require("./routes/userRoute");
 
 // Config
@@ -74,6 +75,8 @@ app.use((req, res, next) => {
     app.use("/news", newsRoute);
 
     app.use("/user", userRoute);
+
+    app.use("/news_comments", newsCommentsRoute);
 
     app.use((req, res, next) => {
         const err = new Error("Page not found");

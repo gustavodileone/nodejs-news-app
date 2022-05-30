@@ -7,37 +7,118 @@
 
     <%- include("../_partials/libraries.ejs"); %>
 
+    <script src="/public/js/formBody.js"></script>
+    <script src="/public/js/ajax/editComment.js" defer></script>
+
     <title>News - <%= news.news_title %></title>
 </head>
 <body id="news">
     <%- include("../_partials/navbar.ejs") %>
 
-    <main id="news-show">
+    <main class="mb-2" id="news-show">
         <section>
-            <div class="container">
-                <div class="d-flex justify-content-center">
-                    <div class="news-card p-5">
-                        <div class="d-flex flex-column align-items-center">
-                            <h2 class="card-title mb-0 text-center">
-                                <%= news.news_title %>
-                            </h2>
-                            <span>
-                                <%= news.news_desc %>
-                            </span>
-                        </div>
-                        <div class="d-flex flex-column mt-4">
-                            <p class="mb-0">
-                                By: <strong> <%= news.news_author %> </strong>
-                            </p>
-                            <p class="mb-0">
-                                Date: <strong class="date"> <%= news.news_datestr %> </strong>
-                            </p>
-                        </div>
-                        <div class="mt-4">
-                            <p>
-                                <%= news.news_content %>
-                            </p>
-                        </div>
+            <div class="custom-container px-3 px-lg-0 mt-3">
+                <div class="news-card w-100 my-4">
+                    <div class="d-flex flex-column align-items-center">
+                        <h2 class="card-title mb-0 text-center">
+                            <%= news.news_title %>
+                        </h2>
+                        <span>
+                            <%= news.news_desc %>
+                        </span>
+                    </div>
+                    <div class="d-flex flex-column mt-4">
+                        <p class="mb-0">
+                            By: 
+                            <strong> 
+                                <a href="/user/<%= news.news_author_slug %>"> <%= news.news_author %> </a> 
+                            </strong>
+                        </p>
+                        <p class="mb-0">
+                            Date: <strong class="date"> <%= news.news_datestr %> </strong>
+                        </p>
+                    </div>
+                    <div class="mt-4">
+                        <p>
+                            <%= news.news_content %>
+                        </p>
+                    </div>
+                </div>
+                <div class="comments w-100">
+                    <div class="comments-title text-center">
+                        <h2>
+                            Comments (<%= allComments ? allComments[0].comments_count : '0' %>)
+                        </h2>
+                    </div>
+
+                    <div class="mt-4">
+                        <% if(sessionUser) { %>
+                            <div class="comments-card publish-comment border rounded p-4">
+                                <strong>
+                                    Leave a comment
+                                </strong>
+
+                                <div class="mt-3">
+                                    <form action="/news_comments/create" method="POST">
+                                        <input type="hidden" name="news_id" value="<%= news.news_id %>">
+                                        <input type="hidden" name="author_id" value="<%= sessionUser.userId %>">
+                                        <input type="hidden" name="news_slug" value="<%= news.news_slug %>">
+
+                                        <label class="w-100">
+                                            <span class="visually-hidden">Write a comment</span>
+                                            <textarea class="comment-textarea" name="comments_content" placeholder="Write a comment" maxlength="3000" required></textarea>
+                                        </label>
+
+                                        <div class="d-flex flex-column-reverse flex-sm-row justify-content-sm-between align-items-sm-center mt-3">
+                                            <button class="btn btn-success rounded-0 mt-2 mt-sm-0">
+                                                Submit
+                                            </button>
+
+                                            <b>
+                                                <%= sessionUser.username %>
+                                            </b>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        <% } %>
+
+                        <% if(allComments) { %>
+                            <% allComments.forEach(comment => { %>
+                                <div class="comments-card border rounded mt-3 p-4">
+                                    <p id="edit-msg-<%= comment.comments_id %>">
+                                        <%= comment.comments_content %>
+                                    </p>
+
+                                    <div class="d-flex flex-column flex-md-row justify-content-between align-items-lg-center mt-4">
+                                        <div class="d-flex flex-column flex-md-row">
+                                            <strong class="me-4">
+                                                <a href="/user/<%= comment.comments_author_slug %>"><%= comment.comments_author_username %></a>
+                                            </strong>
+            
+                                            <time class="date text-muted mx-md-3">
+                                                <%= comment.comments_dateStr %>
+                                            </time>
+                                        </div>
+                                        <% if(sessionUser.userId == comment.comments_author) { %>
+                                            <div class="d-flex mt-3 mt-md-0">
+                                                <button type="button" id="<%= comment.comments_id %>" class="btn btn-primary me-3" onclick="editComment(this)">
+                                                    Edit
+                                                </button>
+
+                                                <form action="/news_comments/delete/<%= comment.comments_id %>?_method=DELETE" method="POST">
+                                                    <input type="hidden" name="news_slug" value="<%= news.news_slug %>">
+
+                                                    <button type="submit" class="btn btn-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% }) %>
+                        <% } %>
                     </div>
                 </div>
             </div>

@@ -49,4 +49,64 @@
             }
         }
     }
+
+    #news-show {
+        .custom-container {
+            width: 100%; 
+            max-width: 670px; 
+            margin: 0 auto;
+
+            // .news-card {}
+
+            .comments {
+                .comments-title {
+                    position: relative;
+
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 52%;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background: #333;
+                    }
+
+                    h2 {
+                        background: #fff;
+                        display: inline;
+                        position: relative;
+                        padding: 0 12px;
+                        font-size: 32px;
+                    }
+                }
+
+                .comment-textarea {
+                    width: 100%;
+                    height: 130px;
+                    padding: 12px;
+                    resize: none;
+
+                    border: 1px solid #d3d3d3;
+                    outline: none;
+                }
+
+                .publish-comment {
+                    strong {
+                        font-size: 24px;
+                    }
+
+                    form {
+                        button {
+                            width: 180px;
+                        }
+
+                        b {
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

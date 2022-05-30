@@ -30,6 +30,8 @@ This project isn't finished yet, but currently it has:
 
 - News CRUD
 
+- Comments on news
+
 - User CRUD
 
 - Simple pagination

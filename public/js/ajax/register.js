@@ -32,12 +32,20 @@ btnContinue.onclick = async e => {
 
     if(emptyFields !== 0) return false;
 
+    const data = {
+        username: username.value,
+        email: email.value,
+        password: password.value
+    };
+
+    const formBody = constructFormBody(data);
+
     fetch("/email-verification", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: `username=${username.value}&email=${email.value}&password=${password.value}`
+        body: formBody
     }).then(async response => {
         response = await response.json();
 
