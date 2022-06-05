@@ -76,18 +76,18 @@ module.exports = {
 
         const user = await userModel.getUserById(id);
 
-        if(username === '') {
-            req.flash("err_msg", "Your username cannot be blank.");
-
-            res.status(400);
-            return res.redirect("/user/edit/" + user.user_slug);
-        }
-
         if(!user) {
             const error = new Error("User not found.");
             error.status = 404;
 
             return next(error);
+        }
+
+        if(username === '') {
+            req.flash("err_msg", "Your username cannot be blank.");
+
+            res.status(400);
+            return res.redirect("/user/edit/" + user.user_slug);
         }
 
         let slug = username.replaceAll(" ", "-");
