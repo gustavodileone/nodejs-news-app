@@ -74,14 +74,14 @@ module.exports = {
 
         username = username.trim();
 
+        const user = await userModel.getUserById(id);
+
         if(username === '') {
             req.flash("err_msg", "Your username cannot be blank.");
 
             res.status(400);
             return res.redirect("/user/edit/" + user.user_slug);
         }
-
-        const user = await userModel.getUserById(id);
 
         if(!user) {
             const error = new Error("User not found.");
